@@ -1,9 +1,7 @@
 import 'package:contact_list/modules/auth/data/datasource/auth_datasource.dart';
 import 'package:contact_list/modules/auth/data/repository/auth_repository.dart';
 import 'package:contact_list/modules/auth/domain/repository/i_auth_repository.dart';
-import 'package:contact_list/modules/auth/domain/usecases/do_delete_usecase.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_login_usecase.dart';
-import 'package:contact_list/modules/auth/domain/usecases/do_logout_usecase.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_register_usecase.dart';
 import 'package:contact_list/modules/auth/presentation/controllers/login_controller.dart';
 import 'package:contact_list/modules/auth/presentation/controllers/register_controller.dart';
@@ -23,8 +21,6 @@ class AuthModule extends Module {
 
   void _usecases(Injector i) {
     i.addSingleton<IDoLoginUsecase>(() => DoLoginUsecase(i.get()));
-    i.addSingleton<IDoDeleteUsecase>(() => DoDeleteUsecase(i.get()));
-    i.addSingleton<IDoLogoutUsecase>(() => DoLogoutUsecase(i.get()));
     i.addSingleton<IDoRegisterUsecase>(() => DoRegisterUsecase(i.get()));
   }
 
@@ -33,7 +29,7 @@ class AuthModule extends Module {
   }
 
   @override
-  void binds(Injector i) {
+  void exportedBinds(Injector i) {
     _datasources(i);
     _repositories(i);
     _usecases(i);

@@ -1,3 +1,5 @@
+import 'package:contact_list/core/service/user_service.dart';
+import 'package:contact_list/modules/auth/domain/entities/auth_entity.dart';
 import 'package:contact_list/modules/auth/domain/entities/login_credentials_entity.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_register_usecase.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +26,21 @@ class RegisterController extends GetXState {
 
     final result = await _doRegisterUsecase.call(credentials);
 
-    result.fold(
-      (error) => print('Error: $error'),
-      (auth) => print('Auth: $auth'),
-    );
+    result.fold(_onRegisterError, _onRegisterSuccess);
 
     isLoading.value = false;
+  }
+
+  void _onRegisterError(error) {
+    print('Error: $error');
+  }
+
+  void _onRegisterSuccess(AuthEntity user) async {
+    final userService = Modular.get<UserService>();
+
+    userService.setUser(user);
+
+    Modular.to.pushReplacementNamed('/home');
   }
 
   void goToLogin() {
