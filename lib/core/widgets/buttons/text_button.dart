@@ -19,7 +19,6 @@ class AppTextButton extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 12,
-            decoration: TextDecoration.underline,
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),

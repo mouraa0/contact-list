@@ -6,6 +6,7 @@ enum ButtonType { primary, secondary, error }
 class Button extends StatelessWidget {
   final String text;
   final ButtonType type;
+  final bool loading;
   final bool disabled;
   final void Function() onPressed;
 
@@ -13,6 +14,7 @@ class Button extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
+    this.loading = false,
     this.disabled = false,
     this.type = ButtonType.primary,
   });
@@ -31,16 +33,25 @@ class Button extends StatelessWidget {
         ),
         elevation: 0,
       ),
-      onPressed: !disabled ? () => onPressed() : null,
+      onPressed: !disabled && !loading ? () => onPressed() : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-        child: Text(
-          text.toUpperCase(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: buttonTextColor(type, context),
-          ),
-        ),
+        child:
+            loading
+                ? SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                )
+                : Text(
+                  text.toUpperCase(),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: buttonTextColor(type, context),
+                  ),
+                ),
       ),
     );
   }

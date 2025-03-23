@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class SubmitButton extends StatelessWidget {
   final String text;
+  final bool loading;
   final bool disabled;
   final GlobalKey<FormState> _formKey;
   final void Function() onSubmit;
@@ -12,14 +13,16 @@ class SubmitButton extends StatelessWidget {
     required GlobalKey<FormState> formKey,
     required this.text,
     required this.onSubmit,
+    this.loading = false,
     this.disabled = false,
   }) : _formKey = formKey;
 
   @override
   Widget build(BuildContext context) {
     return Button(
-      disabled: disabled,
       text: text,
+      disabled: disabled,
+      loading: loading,
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           onSubmit();
