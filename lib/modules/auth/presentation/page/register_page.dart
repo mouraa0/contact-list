@@ -3,13 +3,13 @@ import 'package:contact_list/core/validator/input_validator.dart';
 import 'package:contact_list/core/widgets/buttons/submit_button.dart';
 import 'package:contact_list/core/widgets/buttons/text_button.dart';
 import 'package:contact_list/core/widgets/input/input_field.dart';
-import 'package:contact_list/modules/auth/presentation/controllers/login_controller.dart';
+import 'package:contact_list/modules/auth/presentation/controllers/register_controller.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  final LoginController controller;
+class RegisterPage extends StatelessWidget {
+  final RegisterController controller;
 
-  const LoginPage({super.key, required this.controller});
+  const RegisterPage({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
 }
 
 class _Form extends StatelessWidget {
-  final LoginController controller;
+  final RegisterController controller;
 
   const _Form(this.controller);
 
@@ -82,14 +82,11 @@ class _Form extends StatelessWidget {
               width: double.infinity,
               child: SubmitButton(
                 formKey: formKey,
-                text: 'Login',
-                onSubmit: controller.onLoginClick,
+                text: 'Cadastrar',
+                onSubmit: controller.onRegisterClick,
               ),
             ),
-            AppTextButton(
-              text: 'Cadastrar',
-              onPressed: controller.goToRegister,
-            ),
+            AppTextButton(text: 'Login', onPressed: controller.goToLogin),
           ],
         ),
       ),

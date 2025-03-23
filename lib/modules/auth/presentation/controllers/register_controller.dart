@@ -1,20 +1,20 @@
 import 'package:contact_list/modules/auth/domain/entities/login_credentials_entity.dart';
-import 'package:contact_list/modules/auth/domain/usecases/do_login_usecase.dart';
-import 'package:flutter/widgets.dart';
+import 'package:contact_list/modules/auth/domain/usecases/do_register_usecase.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/state_manager.dart';
 
-class LoginController extends GetXState {
-  final IDoLoginUsecase _doLoginUsecase;
+class RegisterController extends GetXState {
+  final IDoRegisterUsecase _doRegisterUsecase;
 
-  LoginController(this._doLoginUsecase);
+  RegisterController(this._doRegisterUsecase);
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final isLoading = false.obs;
 
-  void onLoginClick() async {
+  void onRegisterClick() async {
     isLoading.value = true;
 
     final credentials = AuthCredentialsEntity(
@@ -22,7 +22,7 @@ class LoginController extends GetXState {
       password: passwordController.text,
     );
 
-    final result = await _doLoginUsecase.call(credentials);
+    final result = await _doRegisterUsecase.call(credentials);
 
     result.fold(
       (error) => print('Error: $error'),
@@ -32,7 +32,7 @@ class LoginController extends GetXState {
     isLoading.value = false;
   }
 
-  void goToRegister() {
-    Modular.to.pushReplacementNamed('/register');
+  void goToLogin() {
+    Modular.to.pushReplacementNamed('/');
   }
 }

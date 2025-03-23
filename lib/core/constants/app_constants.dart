@@ -7,4 +7,6 @@ class AppConstants {
   static const double frameHeight = 80.0;
 
   static const double borderRadius = 14.0;
+
+  static const double formColumnSpacing = 20.0;
 }
