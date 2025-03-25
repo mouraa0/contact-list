@@ -40,7 +40,7 @@ class LoginController extends GetXState {
 
     userService.setUser(user);
 
-    Modular.to.pushReplacementNamed('/home');
+    Modular.to.pushReplacementNamed('/contacts');
   }
 
   void goToRegister() {
