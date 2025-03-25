@@ -16,7 +16,7 @@ class ContactDatasourceImpl implements ContactDatasource {
   @override
   Future<List<ContactModel>?> getContacts(AuthEntity user) async {
     final preferences = await SharedPreferences.getInstance();
-    final data = preferences.getString('${user.email}-contacts');
+    final data = preferences.getString('contacts/${user.email}');
 
     if (data != null) {
       final contacts = json.decode(data) as List;
@@ -29,19 +29,19 @@ class ContactDatasourceImpl implements ContactDatasource {
   @override
   Future<void> addContact(ContactModel contact, AuthEntity user) async {
     final preferences = await SharedPreferences.getInstance();
-    final data = preferences.getString('${user.email}-contacts');
+    final data = preferences.getString('contacts/${user.email}');
 
     if (data != null) {
       final contacts = json.decode(data) as List;
 
       contacts.add(contact.toMap());
       await preferences.setString(
-        '${user.email}-contact',
+        'contacts/${user.email}',
         json.encode(contacts),
       );
     } else {
       await preferences.setString(
-        '${user.email}-contact',
+        'contacts/${user.email}',
         json.encode([contact.toMap()]),
       );
     }
@@ -50,14 +50,14 @@ class ContactDatasourceImpl implements ContactDatasource {
   @override
   Future<void> deleteContact(ContactModel contact, AuthEntity user) async {
     final preferences = await SharedPreferences.getInstance();
-    final data = preferences.getString('${user.email}-contacts');
+    final data = preferences.getString('contacts/${user.email}');
 
     if (data != null) {
       final contacts = json.decode(data) as List;
 
       contacts.removeWhere((element) => element['cpf'] == contact.cpf);
       await preferences.setString(
-        '${user.email}-contact',
+        'contacts/${user.email}',
         json.encode(contacts),
       );
     }
@@ -66,7 +66,7 @@ class ContactDatasourceImpl implements ContactDatasource {
   @override
   Future<void> updateContact(ContactModel contact, AuthEntity user) async {
     final preferences = await SharedPreferences.getInstance();
-    final data = preferences.getString('${user.email}-contacts');
+    final data = preferences.getString('contacts/${user.email}');
 
     if (data != null) {
       final contacts = json.decode(data) as List;
@@ -76,7 +76,7 @@ class ContactDatasourceImpl implements ContactDatasource {
       );
       contacts[index] = contact.toMap();
       await preferences.setString(
-        '${user.email}-contact',
+        'contacts/${user.email}',
         json.encode(contacts),
       );
     }
