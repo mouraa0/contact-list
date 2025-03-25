@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class AuthDatasource {
   Future<AuthModel> login(AuthCredentialsEntity credentials);
   Future<AuthModel> register(AuthCredentialsEntity credentials);
+  Future<AuthModel?> getCurrentUser();
   Future<void> delete(AuthCredentialsEntity credentials);
   Future<void> logout();
 }
@@ -41,6 +42,18 @@ class AuthDatasourceImpl implements AuthDatasource {
     await preferences.setString(credentials.email, account);
 
     return AuthModel(email: credentials.email);
+  }
+
+  @override
+  Future<AuthModel?> getCurrentUser() async {
+    final preferences = await SharedPreferences.getInstance();
+    final email = preferences.getString('currentUser');
+
+    if (email == null) {
+      return null;
+    }
+
+    return AuthModel(email: email);
   }
 
   @override

@@ -35,6 +35,17 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
+  Future<Either<Failure, AuthEntity?>> getCurrentUser() async {
+    try {
+      final result = await _datasource.getCurrentUser();
+
+      return Right(result);
+    } catch (e) {
+      return Left(e is Failure ? e : AuthFailure(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, AuthEntity>> register(
     AuthCredentialsEntity credentials,
   ) async {

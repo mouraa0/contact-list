@@ -9,5 +9,6 @@ abstract class IAuthRepository {
   Future<Either<Failure, AuthEntity>> register(
     AuthCredentialsEntity credentials,
   );
+  Future<Either<Failure, AuthEntity?>> getCurrentUser();
   Future<Either<Failure, AuthEntity>> login(AuthCredentialsEntity credentials);
 }

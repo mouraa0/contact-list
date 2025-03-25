@@ -1,4 +1,3 @@
-import 'package:contact_list/core/service/user_service.dart';
 import 'package:contact_list/modules/auth/domain/entities/auth_entity.dart';
 import 'package:contact_list/modules/auth/domain/entities/login_credentials_entity.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_register_usecase.dart';
@@ -36,11 +35,7 @@ class RegisterController extends GetXState {
   }
 
   void _onRegisterSuccess(AuthEntity user) async {
-    final userService = Modular.get<UserService>();
-
-    userService.setUser(user);
-
-    Modular.to.pushReplacementNamed('/contacts');
+    goToLogin();
   }
 
   void goToLogin() {
