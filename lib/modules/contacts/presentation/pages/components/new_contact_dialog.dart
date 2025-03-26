@@ -157,14 +157,11 @@ class _AddressForm extends StatelessWidget {
                     suggestionsCallback: controller.onSearchChanged,
                     loadingBuilder: (context) => const Text('Loading...'),
                     builder: (context, controller, focusNode) {
-                      return TextField(
+                      return InputField(
+                        prefix: Icons.search,
+                        hintText: 'Buscar Endereço',
                         focusNode: focusNode,
                         controller: controller,
-                        autofocus: true,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'City',
-                        ),
                       );
                     },
                     itemBuilder: (context, address) {
