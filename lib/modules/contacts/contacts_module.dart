@@ -49,7 +49,7 @@ class ContactsModule extends Module {
     i.addSingleton<AddressModalController>(
       () => AddressModalController(i.get(), i.get(), i.get()),
     );
-    i.addSingleton(() => ContactPageController(i.get(), i.get()));
+    i.addSingleton(() => ContactPageController(i.get(), i.get(), i.get()));
   }
 
   @override
@@ -59,7 +59,7 @@ class ContactsModule extends Module {
     _usecases(i);
     _controllers(i);
   }
-  
+
   @override
   void routes(r) {
     r.child(

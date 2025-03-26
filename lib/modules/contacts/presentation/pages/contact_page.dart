@@ -134,7 +134,7 @@ class _ContactList extends StatelessWidget {
           return ContactItem(
             contact: contact,
             onTap: () => controller.onContactClicked(contact),
-            onDelete: () {},
+            onDelete: () => controller.onDeleteContact(contact),
             onEdit: () {},
           );
         },

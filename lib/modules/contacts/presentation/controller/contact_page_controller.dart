@@ -2,6 +2,7 @@ import 'package:contact_list/core/error/failure.dart';
 import 'package:contact_list/core/service/user_service.dart';
 import 'package:contact_list/modules/contacts/domain/entities/contact_entity.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_add_contact_usecase.dart';
+import 'package:contact_list/modules/contacts/domain/usecases/do_delete_contact_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_get_contacts_usecase.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/state_manager.dart';
@@ -10,8 +11,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class ContactPageController extends GetxController {
   final IDoGetContactsUsecase _doGetContactsUsecase;
   final IDoAddContactUsecase _doAddContactUsecase;
+  final IDoDeleteContactUsecase _doDeleteContactUsecase;
 
-  ContactPageController(this._doAddContactUsecase, this._doGetContactsUsecase);
+  ContactPageController(
+    this._doAddContactUsecase,
+    this._doGetContactsUsecase,
+    this._doDeleteContactUsecase,
+  );
 
   RxList<ContactEntity> contacts = <ContactEntity>[].obs;
 
@@ -79,6 +85,21 @@ class ContactPageController extends GetxController {
     );
 
     await mapController!.animateCamera(CameraUpdate.newCameraPosition(pos));
+  }
+
+  void onDeleteContact(ContactEntity contact) async {
+    final userService = Modular.get<UserService>();
+
+    final result = await _doDeleteContactUsecase(contact, userService.user!);
+
+    result.fold(
+      (failure) {
+        print((failure as ContactFailure).message);
+      },
+      (success) {
+        getContacts();
+      },
+    );
   }
 
   void getContacts() async {
