@@ -11,9 +11,7 @@ class AuthRepository implements IAuthRepository {
   AuthRepository(this._datasource);
 
   @override
-  Future<Either<Failure, void>> delete(
-    AuthCredentialsEntity credentials,
-  ) async {
+  Future<Either<Failure, void>> delete(AuthEntity credentials) async {
     try {
       await _datasource.delete(credentials);
 

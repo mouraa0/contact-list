@@ -186,7 +186,7 @@ class _UserAvatar extends StatelessWidget {
     return PopupMenuButton<String>(
       onSelected: (value) {
         if (value == 'delete') {
-          // controller.deleteAccount();
+          controller.onDeleteAccount();
         } else if (value == 'logout') {
           controller.logout();
         }

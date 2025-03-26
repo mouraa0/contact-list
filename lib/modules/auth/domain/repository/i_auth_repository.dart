@@ -4,7 +4,7 @@ import 'package:contact_list/modules/auth/domain/entities/login_credentials_enti
 import 'package:dartz/dartz.dart';
 
 abstract class IAuthRepository {
-  Future<Either<Failure, void>> delete(AuthCredentialsEntity credentials);
+  Future<Either<Failure, void>> delete(AuthEntity credentials);
   Future<Either<Failure, void>> logout();
   Future<Either<Failure, AuthEntity>> register(
     AuthCredentialsEntity credentials,

@@ -10,6 +10,7 @@ abstract class ContactDatasource {
   Future<void> addContact(ContactModel contact, AuthEntity user);
   Future<void> deleteContact(ContactModel contact, AuthEntity user);
   Future<void> updateContact(ContactModel contact, AuthEntity user);
+  Future<void> clearContacts(AuthEntity user);
 }
 
 class ContactDatasourceImpl implements ContactDatasource {
@@ -84,5 +85,11 @@ class ContactDatasourceImpl implements ContactDatasource {
         json.encode(contacts),
       );
     }
+  }
+
+  @override
+  Future<void> clearContacts(AuthEntity user) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.remove('contacts/${user.email}');
   }
 }

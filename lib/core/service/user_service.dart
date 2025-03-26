@@ -1,5 +1,6 @@
 import 'package:contact_list/core/error/failure.dart';
 import 'package:contact_list/modules/auth/domain/entities/auth_entity.dart';
+import 'package:contact_list/modules/auth/domain/usecases/do_delete_usecase.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_get_current_user_usecase.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_logout_usecase.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -7,8 +8,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 class UserService {
   final IDoGetCurrentUserUsecase _doGetCurrentUserUsecase;
   final IDoLogoutUsecase _doLogoutUsecase;
+  final IDoDeleteAccountUsecase _doDeleteUsecase;
 
-  UserService(this._doGetCurrentUserUsecase, this._doLogoutUsecase) {
+  UserService(
+    this._doGetCurrentUserUsecase,
+    this._doLogoutUsecase,
+    this._doDeleteUsecase,
+  ) {
     _loadUser();
   }
 
@@ -25,6 +31,11 @@ class UserService {
     await _doLogoutUsecase();
 
     Modular.to.popAndPushNamed('/');
+  }
+
+  Future<void> deleteAccount() async {
+    await _doDeleteUsecase(_user!);
+    _user = null;
   }
 
   bool isLogged() {

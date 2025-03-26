@@ -2,6 +2,7 @@ import 'package:contact_list/core/service/user_service.dart';
 import 'package:contact_list/modules/auth/data/datasource/auth_datasource.dart';
 import 'package:contact_list/modules/auth/data/repository/auth_repository.dart';
 import 'package:contact_list/modules/auth/domain/repository/i_auth_repository.dart';
+import 'package:contact_list/modules/auth/domain/usecases/do_delete_usecase.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_get_current_user_usecase.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_login_usecase.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_logout_usecase.dart';
@@ -29,6 +30,9 @@ class AuthModule extends Module {
       () => DoGetCurrentUserUsecase(i.get()),
     );
     i.addSingleton<IDoLogoutUsecase>(() => DoLogoutUsecase(i.get()));
+    i.addSingleton<IDoDeleteAccountUsecase>(
+      () => DoDeleteAccountUsecase(i.get()),
+    );
   }
 
   void _repositories(Injector i) {
@@ -36,7 +40,7 @@ class AuthModule extends Module {
   }
 
   void _services(Injector i) {
-    i.addInstance<UserService>(UserService(i.get(), i.get()));
+    i.addInstance<UserService>(UserService(i.get(), i.get(), i.get()));
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:contact_list/core/error/failure.dart';
 import 'package:contact_list/core/service/user_service.dart';
 import 'package:contact_list/modules/contacts/domain/entities/contact_entity.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_add_contact_usecase.dart';
+import 'package:contact_list/modules/contacts/domain/usecases/do_clear_contacts_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_delete_contact_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_get_contacts_usecase.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -12,11 +13,13 @@ class ContactPageController extends GetxController {
   final IDoGetContactsUsecase _doGetContactsUsecase;
   final IDoAddContactUsecase _doAddContactUsecase;
   final IDoDeleteContactUsecase _doDeleteContactUsecase;
+  final IDoClearContactsUsecase _doClearContactsUsecase;
 
   ContactPageController(
     this._doAddContactUsecase,
     this._doGetContactsUsecase,
     this._doDeleteContactUsecase,
+    this._doClearContactsUsecase,
   );
 
   RxList<ContactEntity> contacts = <ContactEntity>[].obs;
@@ -66,6 +69,15 @@ class ContactPageController extends GetxController {
     final userService = Modular.get<UserService>();
 
     userService.logout();
+  }
+
+  void onDeleteAccount() async {
+    final userService = Modular.get<UserService>();
+
+    await _doClearContactsUsecase(userService.user!);
+    await userService.deleteAccount();
+
+    Modular.to.popAndPushNamed('/');
   }
 
   void onContactClicked(ContactEntity contact) async {

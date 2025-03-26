@@ -5,6 +5,7 @@ import 'package:contact_list/modules/contacts/data/repositories/contact_reposito
 import 'package:contact_list/modules/contacts/domain/repositories/i_address_repository.dart';
 import 'package:contact_list/modules/contacts/domain/repositories/i_contact_repository.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_add_contact_usecase.dart';
+import 'package:contact_list/modules/contacts/domain/usecases/do_clear_contacts_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_delete_contact_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_get_address_details_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_get_autocomplete_address_usecase.dart';
@@ -43,13 +44,18 @@ class ContactsModule extends Module {
       () => DoGetAddressDetailsUsecase(i.get()),
     );
     i.addSingleton<IDoGetLatLngUsecase>(() => DoGetLatLngUsecase(i.get()));
+    i.addSingleton<IDoClearContactsUsecase>(
+      () => DoClearContactsUsecase(i.get()),
+    );
   }
 
   void _controllers(Injector i) {
     i.addSingleton<AddressModalController>(
       () => AddressModalController(i.get(), i.get(), i.get()),
     );
-    i.addSingleton(() => ContactPageController(i.get(), i.get(), i.get()));
+    i.addSingleton(
+      () => ContactPageController(i.get(), i.get(), i.get(), i.get()),
+    );
   }
 
   @override

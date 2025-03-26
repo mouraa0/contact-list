@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:contact_list/core/error/failure.dart';
 import 'package:contact_list/modules/auth/data/model/auth_model.dart';
+import 'package:contact_list/modules/auth/domain/entities/auth_entity.dart';
 import 'package:contact_list/modules/auth/domain/entities/login_credentials_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,7 +9,7 @@ abstract class AuthDatasource {
   Future<AuthModel> login(AuthCredentialsEntity credentials);
   Future<AuthModel> register(AuthCredentialsEntity credentials);
   Future<AuthModel?> getCurrentUser();
-  Future<void> delete(AuthCredentialsEntity credentials);
+  Future<void> delete(AuthEntity credentials);
   Future<void> logout();
 }
 
@@ -61,7 +62,7 @@ class AuthDatasourceImpl implements AuthDatasource {
   }
 
   @override
-  Future<void> delete(AuthCredentialsEntity credentials) async {
+  Future<void> delete(AuthEntity credentials) async {
     final preferences = await SharedPreferences.getInstance();
     final data = preferences.getString(credentials.email);
 
@@ -70,6 +71,7 @@ class AuthDatasourceImpl implements AuthDatasource {
     }
 
     await preferences.remove(credentials.email);
+    await preferences.remove('currentUser');
   }
 
   @override

@@ -65,4 +65,15 @@ class ContactRepository implements IContactRepository {
       return Left(e is Failure ? e : ContactFailure(message: 'Error'));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> clearContacts(AuthEntity user) async {
+    try {
+      await _datasource.clearContacts(user);
+
+      return Right(null);
+    } catch (e) {
+      return Left(e is Failure ? e : ContactFailure(message: 'Error'));
+    }
+  }
 }

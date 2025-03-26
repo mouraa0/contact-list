@@ -17,4 +17,5 @@ abstract class IContactRepository {
     ContactEntity contact,
     AuthEntity user,
   );
+  Future<Either<Failure, void>> clearContacts(AuthEntity user);
 }
