@@ -119,13 +119,28 @@ class AddressModalController extends GetxController {
 
     isLoading.value = false;
 
-    Modular.to.pop();
-
-    return ContactEntity(
+    final contact = ContactEntity(
       name: nameController.text,
       cpf: cpfController.text,
       phone: phoneController.text,
       address: address,
     );
+
+    clearFields();
+
+    Modular.to.pop();
+
+    return contact;
+  }
+
+  void clearFields() {
+    nameController.clear();
+    cpfController.clear();
+    phoneController.clear();
+    streetController.clear();
+    numberController.clear();
+    cityController.clear();
+    stateController.clear();
+    postalCodeController.clear();
   }
 }

@@ -52,10 +52,17 @@ class LoginController extends GetXState {
 
     userService.setUser(user);
 
+    clearFields();
     Modular.to.pushReplacementNamed('/contacts');
   }
 
   void goToRegister() {
+    clearFields();
     Modular.to.pushReplacementNamed('/register');
+  }
+
+  void clearFields() {
+    emailController.clear();
+    passwordController.clear();
   }
 }

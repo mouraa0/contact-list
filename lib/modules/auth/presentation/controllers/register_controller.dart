@@ -50,6 +50,12 @@ class RegisterController extends GetXState {
   }
 
   void goToLogin() {
+    clearFields();
     Modular.to.pushReplacementNamed('/');
+  }
+
+  void clearFields() {
+    emailController.clear();
+    passwordController.clear();
   }
 }
