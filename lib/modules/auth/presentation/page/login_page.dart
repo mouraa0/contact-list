@@ -1,9 +1,6 @@
 import 'package:contact_list/core/constants/app_constants.dart';
-import 'package:contact_list/core/validator/input_validator.dart';
-import 'package:contact_list/core/widgets/buttons/submit_button.dart';
-import 'package:contact_list/core/widgets/buttons/text_button.dart';
-import 'package:contact_list/core/widgets/input/input_field.dart';
 import 'package:contact_list/modules/auth/presentation/controllers/login_controller.dart';
+import 'package:contact_list/modules/auth/presentation/page/components/auth_form.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -39,58 +36,17 @@ class LoginPage extends StatelessWidget {
                   size: 80.0,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                _Form(controller),
+                AuthForm(
+                  emailController: controller.emailController,
+                  passwordController: controller.passwordController,
+                  submitText: 'Entrar',
+                  secondaryButtonText: 'Registrar',
+                  onSubmit: () => controller.onLoginClick(context),
+                  secondaryButtonAction: controller.goToRegister,
+                ),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Form extends StatelessWidget {
-  final LoginController controller;
-
-  const _Form(this.controller);
-
-  @override
-  Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-
-    return Form(
-      key: formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(AppConstants.defaultPadding),
-        child: Column(
-          spacing: AppConstants.formColumnSpacing,
-          children: [
-            InputField(
-              headerText: 'E-mail',
-              hintText: 'pessoa@gmail.com',
-              controller: controller.emailController,
-              validator: InputValidator.validateEmail,
-            ),
-            InputField(
-              headerText: 'Senha',
-              hintText: '******',
-              controller: controller.passwordController,
-              isPassword: true,
-              validator: InputValidator.validatePassword,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: SubmitButton(
-                formKey: formKey,
-                text: 'Login',
-                onSubmit: controller.onLoginClick,
-              ),
-            ),
-            AppTextButton(
-              text: 'Cadastrar',
-              onPressed: controller.goToRegister,
-            ),
-          ],
         ),
       ),
     );
