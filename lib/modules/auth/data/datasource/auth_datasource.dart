@@ -18,7 +18,11 @@ class AuthDatasourceImpl implements AuthDatasource {
     final preferences = await SharedPreferences.getInstance();
     final data = preferences.getString(credentials.email);
 
-    final account = json.decode(data!);
+    if (data == null) {
+      throw AuthFailure(message: 'Conta não foi encontrada!');
+    }
+
+    final account = json.decode(data);
 
     if (account['password'] == credentials.password) {
       await preferences.setString('currentUser', credentials.email);
@@ -26,7 +30,7 @@ class AuthDatasourceImpl implements AuthDatasource {
       return AuthModel(email: credentials.email);
     }
 
-    throw AuthFailure(message: 'Invalid credentials');
+    throw AuthFailure(message: 'Credenciais inválidas!');
   }
 
   @override
@@ -35,7 +39,7 @@ class AuthDatasourceImpl implements AuthDatasource {
     final data = preferences.getString(credentials.email);
 
     if (data != null) {
-      throw AuthFailure(message: 'Account already exists');
+      throw AuthFailure(message: 'Conta já existe');
     }
 
     final account = json.encode(credentials.toMap());
@@ -62,7 +66,7 @@ class AuthDatasourceImpl implements AuthDatasource {
     final data = preferences.getString(credentials.email);
 
     if (data == null) {
-      throw AuthFailure(message: 'Account not found');
+      throw AuthFailure(message: 'Conta não foi encontrada!');
     }
 
     await preferences.remove(credentials.email);

@@ -1,3 +1,5 @@
+import 'package:contact_list/core/error/failure.dart';
+import 'package:contact_list/core/service/user_service.dart';
 import 'package:contact_list/modules/auth/domain/entities/auth_entity.dart';
 import 'package:contact_list/modules/auth/domain/entities/login_credentials_entity.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_register_usecase.dart';
@@ -15,7 +17,7 @@ class RegisterController extends GetXState {
 
   final isLoading = false.obs;
 
-  void onRegisterClick() async {
+  void onRegisterClick(BuildContext context) async {
     isLoading.value = true;
 
     final credentials = AuthCredentialsEntity(
@@ -31,11 +33,25 @@ class RegisterController extends GetXState {
   }
 
   void _onRegisterError(error) {
-    print('Error: $error');
+    final scaffold = ScaffoldMessenger.of(context);
+
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text((error as AuthFailure).message),
+        action: SnackBarAction(
+          label: 'Fechar',
+          onPressed: scaffold.hideCurrentSnackBar,
+        ),
+      ),
+    );
   }
 
   void _onRegisterSuccess(AuthEntity user) async {
-    goToLogin();
+    final userService = Modular.get<UserService>();
+
+    userService.setUser(user);
+
+    Modular.to.pushReplacementNamed('/contacts');
   }
 
   void goToLogin() {
