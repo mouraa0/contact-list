@@ -1,8 +1,10 @@
 import 'package:contact_list/core/constants/app_constants.dart';
 import 'package:contact_list/modules/contacts/presentation/controller/contact_page_controller.dart';
+import 'package:contact_list/modules/contacts/presentation/pages/components/contact_item.dart';
 import 'package:contact_list/modules/contacts/presentation/pages/components/map_view.dart';
 import 'package:contact_list/modules/contacts/presentation/pages/components/new_contact_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 class ContactsPage extends StatefulWidget {
   final ContactPageController controller;
@@ -79,7 +81,7 @@ class _Sidebar extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          // Expanded(child: ContactList()),
+          Expanded(child: _ContactList(controller: controller)),
         ],
       ),
     );
@@ -102,6 +104,24 @@ class _Sidebar extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _ContactList extends StatelessWidget {
+  final ContactPageController controller;
+
+  const _ContactList({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => ListView.builder(
+        itemCount: controller.contacts.length,
+        itemBuilder: (context, index) {
+          return ContactItem(contact: controller.contacts[index], onTap: () {});
+        },
+      ),
     );
   }
 }

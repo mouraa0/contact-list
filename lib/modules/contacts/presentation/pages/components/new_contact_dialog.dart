@@ -46,6 +46,7 @@ class NewContactDialog extends StatelessWidget {
               ),
               InputField(
                 headerText: 'Nome',
+                controller: controller.nameController,
                 hintText: 'João da Silva',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -61,6 +62,7 @@ class NewContactDialog extends StatelessWidget {
                     child: InputField(
                       headerText: 'CPF',
                       hintText: '000.000.000-00',
+                      controller: controller.cpfController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(11),
@@ -84,6 +86,7 @@ class NewContactDialog extends StatelessWidget {
                     child: InputField(
                       headerText: 'Telefone',
                       hintText: '(00) 00000-0000',
+                      controller: controller.phoneController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(11),
