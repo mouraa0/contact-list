@@ -1,5 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:contact_list/core/constants/app_constants.dart';
+import 'package:contact_list/core/validator/input_validator.dart';
 import 'package:contact_list/core/widgets/buttons/submit_button.dart';
 import 'package:contact_list/core/widgets/input/input_field.dart';
 import 'package:contact_list/modules/contacts/domain/entities/autocomplete_address_entity.dart';
@@ -48,12 +49,7 @@ class NewContactDialog extends StatelessWidget {
                 headerText: 'Nome',
                 controller: controller.nameController,
                 hintText: 'João da Silva',
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Este campo é obrigatório';
-                  }
-                  return null;
-                },
+                validator: InputValidator.validateRequiredField,
               ),
               Row(
                 spacing: 10,
@@ -68,18 +64,7 @@ class NewContactDialog extends StatelessWidget {
                         LengthLimitingTextInputFormatter(11),
                         CpfInputFormatter(),
                       ],
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Este campo é obrigatório';
-                        } else if (!RegExp(
-                          r'^\d{3}\.\d{3}\.\d{3}-\d{2}$',
-                        ).hasMatch(value)) {
-                          return 'CPF inválido. O formato deve ser XXX.XXX.XXX-XX';
-                        } else if (!CPFValidator.isValid(value)) {
-                          return 'CPF inválido. Verifique os dados informados';
-                        }
-                        return null;
-                      },
+                      validator: InputValidator.validateCPF,
                     ),
                   ),
                   Expanded(
@@ -92,16 +77,7 @@ class NewContactDialog extends StatelessWidget {
                         LengthLimitingTextInputFormatter(11),
                         TelefoneInputFormatter(),
                       ],
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Este campo é obrigatório';
-                        } else if (!RegExp(
-                          r'^\(\d{2}\) \d{5}-\d{4}$',
-                        ).hasMatch(value)) {
-                          return 'Telefone inválido. O formato deve ser (XX) XXXXX-XXXX';
-                        }
-                        return null;
-                      },
+                      validator: InputValidator.validatePhone,
                     ),
                   ),
                 ],
@@ -173,12 +149,7 @@ class _AddressForm extends StatelessWidget {
                     headerText: 'Logradouro',
                     hintText: 'Rua das Flores',
                     controller: controller.streetController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Este campo é obrigatório';
-                      }
-                      return null;
-                    },
+                    validator: InputValidator.validateRequiredField,
                   ),
                   Row(
                     spacing: 10,
@@ -191,12 +162,7 @@ class _AddressForm extends StatelessWidget {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(5),
                           ],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Este campo é obrigatório';
-                            }
-                            return null;
-                          },
+                          validator: InputValidator.validateRequiredField,
                         ),
                       ),
                       Expanded(
@@ -211,12 +177,7 @@ class _AddressForm extends StatelessWidget {
                     headerText: 'Cidade',
                     controller: controller.cityController,
                     hintText: 'São Paulo',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Este campo é obrigatório';
-                      }
-                      return null;
-                    },
+                    validator: InputValidator.validateRequiredField,
                   ),
                   Row(
                     spacing: 10,
@@ -232,14 +193,7 @@ class _AddressForm extends StatelessWidget {
                             ),
                             LengthLimitingTextInputFormatter(2),
                           ],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Este campo é obrigatório';
-                            } else if (value.length != 2) {
-                              return 'UF inválida. Deve ter 2 caracteres';
-                            }
-                            return null;
-                          },
+                          validator: InputValidator.validateUF,
                         ),
                       ),
                       Expanded(
@@ -252,16 +206,7 @@ class _AddressForm extends StatelessWidget {
                             LengthLimitingTextInputFormatter(8),
                             CepInputFormatter(ponto: false),
                           ],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Este campo é obrigatório';
-                            } else if (!RegExp(
-                              r'^\d{5}-\d{3}$',
-                            ).hasMatch(value)) {
-                              return 'CEP inválido. O formato deve ser XXXXX-XXX';
-                            }
-                            return null;
-                          },
+                          validator: InputValidator.validateCEP,
                         ),
                       ),
                     ],
