@@ -1,6 +1,6 @@
 # contact_list
 
-A new Flutter project.
+run with flutter run -d chrome --web-browser-flag "--disable-web-security"  if cors error
 
 ## Getting Started
 
