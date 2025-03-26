@@ -29,7 +29,14 @@ class _ContactsPageState extends State<ContactsPage> {
           Expanded(flex: 1, child: _Sidebar(widget.controller)),
           Expanded(
             flex: 3,
-            child: Column(children: [_Topbar(), Expanded(child: MapView())]),
+            child: Column(
+              children: [
+                _Topbar(),
+                Expanded(
+                  child: MapView(onMapCreated: widget.controller.onMapCreated),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -119,7 +126,12 @@ class _ContactList extends StatelessWidget {
       () => ListView.builder(
         itemCount: controller.contacts.length,
         itemBuilder: (context, index) {
-          return ContactItem(contact: controller.contacts[index], onTap: () {});
+          final contact = controller.contacts[index];
+
+          return ContactItem(
+            contact: contact,
+            onTap: () => controller.onContactClicked(contact),
+          );
         },
       ),
     );

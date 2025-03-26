@@ -5,6 +5,7 @@ import 'package:contact_list/modules/contacts/domain/usecases/do_add_contact_use
 import 'package:contact_list/modules/contacts/domain/usecases/do_get_contacts_usecase.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/state_manager.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ContactPageController extends GetxController {
   final IDoGetContactsUsecase _doGetContactsUsecase;
@@ -15,6 +16,8 @@ class ContactPageController extends GetxController {
   RxList<ContactEntity> contacts = <ContactEntity>[].obs;
 
   RxBool isLoading = false.obs;
+
+  GoogleMapController? mapController;
 
   void initContactPage() {
     final userService = Modular.get<UserService>();
@@ -41,6 +44,19 @@ class ContactPageController extends GetxController {
         getContacts();
       },
     );
+  }
+
+  void onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
+  void onContactClicked(ContactEntity contact) async {
+    final CameraPosition pos = CameraPosition(
+      target: LatLng(contact.address.lat, contact.address.lng),
+      zoom: 18,
+    );
+
+    await mapController!.animateCamera(CameraUpdate.newCameraPosition(pos));
   }
 
   void getContacts() async {
