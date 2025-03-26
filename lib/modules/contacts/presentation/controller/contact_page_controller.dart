@@ -114,6 +114,20 @@ class ContactPageController extends GetxController {
     );
   }
 
+  void onSearch(String? cpf) async {
+    if (cpf == null || cpf.isEmpty) {
+      getContacts();
+      return;
+    }
+
+    final filteredContacts =
+        contacts.where((contact) {
+          return contact.cpf.contains(cpf);
+        }).toList();
+
+    contacts.value = filteredContacts;
+  }
+
   void getContacts() async {
     final userService = Modular.get<UserService>();
 

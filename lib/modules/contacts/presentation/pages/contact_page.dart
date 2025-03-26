@@ -1,4 +1,5 @@
 import 'package:contact_list/core/constants/app_constants.dart';
+import 'package:contact_list/core/widgets/input/input_field.dart';
 import 'package:contact_list/modules/contacts/presentation/controller/contact_page_controller.dart';
 import 'package:contact_list/modules/contacts/presentation/pages/components/contact_item.dart';
 import 'package:contact_list/modules/contacts/presentation/pages/components/map_view.dart';
@@ -91,6 +92,16 @@ class _Sidebar extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppConstants.defaultPadding,
+            ),
+            child: InputField(
+              prefix: Icons.search,
+              hintText: 'Filtrar por CPF',
+              onChanged: controller.onSearch,
+            ),
+          ),
           Expanded(child: _ContactList(controller: controller)),
         ],
       ),
