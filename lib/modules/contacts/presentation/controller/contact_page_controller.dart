@@ -15,6 +15,8 @@ class ContactPageController extends GetxController {
 
   RxList<ContactEntity> contacts = <ContactEntity>[].obs;
 
+  RxSet<Marker> markers = <Marker>{}.obs;
+
   RxBool isLoading = false.obs;
 
   GoogleMapController? mapController;
@@ -51,9 +53,19 @@ class ContactPageController extends GetxController {
   }
 
   void onContactClicked(ContactEntity contact) async {
-    final CameraPosition pos = CameraPosition(
-      target: LatLng(contact.address.lat, contact.address.lng),
-      zoom: 18,
+    final latLng = LatLng(contact.address.lat, contact.address.lng);
+
+    final CameraPosition pos = CameraPosition(target: latLng, zoom: 18);
+
+    markers.clear();
+
+    markers.add(
+      Marker(
+        markerId: MarkerId(
+          'marker_${contact.address.lat}_${contact.address.lng}',
+        ),
+        position: latLng,
+      ),
     );
 
     await mapController!.animateCamera(CameraUpdate.newCameraPosition(pos));

@@ -33,7 +33,10 @@ class _ContactsPageState extends State<ContactsPage> {
               children: [
                 _Topbar(),
                 Expanded(
-                  child: MapView(onMapCreated: widget.controller.onMapCreated),
+                  child: MapView(
+                    onMapCreated: widget.controller.onMapCreated,
+                    markers: widget.controller.markers,
+                  ),
                 ),
               ],
             ),
@@ -131,6 +134,8 @@ class _ContactList extends StatelessWidget {
           return ContactItem(
             contact: contact,
             onTap: () => controller.onContactClicked(contact),
+            onDelete: () {},
+            onEdit: () {},
           );
         },
       ),
