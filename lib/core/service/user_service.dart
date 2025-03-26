@@ -1,11 +1,14 @@
 import 'package:contact_list/core/error/failure.dart';
 import 'package:contact_list/modules/auth/domain/entities/auth_entity.dart';
 import 'package:contact_list/modules/auth/domain/usecases/do_get_current_user_usecase.dart';
+import 'package:contact_list/modules/auth/domain/usecases/do_logout_usecase.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class UserService {
   final IDoGetCurrentUserUsecase _doGetCurrentUserUsecase;
+  final IDoLogoutUsecase _doLogoutUsecase;
 
-  UserService(this._doGetCurrentUserUsecase) {
+  UserService(this._doGetCurrentUserUsecase, this._doLogoutUsecase) {
     _loadUser();
   }
 
@@ -17,8 +20,11 @@ class UserService {
     _user = user;
   }
 
-  void logout() {
+  void logout() async {
     _user = null;
+    await _doLogoutUsecase();
+
+    Modular.to.popAndPushNamed('/');
   }
 
   bool isLogged() {

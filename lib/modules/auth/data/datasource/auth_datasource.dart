@@ -75,6 +75,6 @@ class AuthDatasourceImpl implements AuthDatasource {
   @override
   Future<void> logout() async {
     final preferences = await SharedPreferences.getInstance();
-    await preferences.clear();
+    await preferences.remove('currentUser');
   }
 }

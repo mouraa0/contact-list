@@ -31,7 +31,7 @@ class _ContactsPageState extends State<ContactsPage> {
             flex: 3,
             child: Column(
               children: [
-                _Topbar(),
+                _Topbar(widget.controller),
                 Expanded(
                   child: MapView(
                     onMapCreated: widget.controller.onMapCreated,
@@ -144,7 +144,9 @@ class _ContactList extends StatelessWidget {
 }
 
 class _Topbar extends StatelessWidget {
-  const _Topbar();
+  final ContactPageController controller;
+
+  const _Topbar(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +169,7 @@ class _Topbar extends StatelessWidget {
             "Map",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          _UserAvatar(),
+          _UserAvatar(controller),
         ],
       ),
     );
@@ -175,22 +177,18 @@ class _Topbar extends StatelessWidget {
 }
 
 class _UserAvatar extends StatelessWidget {
-  const _UserAvatar();
+  final ContactPageController controller;
+
+  const _UserAvatar(this.controller);
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       onSelected: (value) {
         if (value == 'delete') {
-          const snackBar = SnackBar(
-            content: Text('Conta deletada com sucesso!'),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          // controller.deleteAccount();
         } else if (value == 'logout') {
-          const snackBar = SnackBar(
-            content: Text('Sessão encerrada com sucesso!'),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          controller.logout();
         }
       },
       itemBuilder:

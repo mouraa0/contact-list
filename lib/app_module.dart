@@ -8,11 +8,7 @@ class AppModule extends Module {
 
   @override
   void routes(r) {
-    r.module('/', module: AuthModule(), transition: TransitionType.fadeIn);
-    r.module(
-      '/contacts',
-      module: ContactsModule(),
-      transition: TransitionType.fadeIn,
-    );
+    r.module('/', module: AuthModule());
+    r.module('/contacts', module: ContactsModule());
   }
 }

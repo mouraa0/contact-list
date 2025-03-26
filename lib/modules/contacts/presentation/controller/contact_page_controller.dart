@@ -25,7 +25,11 @@ class ContactPageController extends GetxController {
     final userService = Modular.get<UserService>();
 
     if (!userService.isLogged()) {
-      Modular.to.popAndPushNamed('/');
+      Future.delayed(const Duration(milliseconds: 100), () {
+        Modular.to.popAndPushNamed('/');
+      });
+
+      return;
     }
 
     getContacts();
@@ -50,6 +54,12 @@ class ContactPageController extends GetxController {
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  void logout() {
+    final userService = Modular.get<UserService>();
+
+    userService.logout();
   }
 
   void onContactClicked(ContactEntity contact) async {
