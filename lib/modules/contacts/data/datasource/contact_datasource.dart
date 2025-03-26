@@ -34,6 +34,10 @@ class ContactDatasourceImpl implements ContactDatasource {
     if (data != null) {
       final contacts = json.decode(data) as List;
 
+      if (contacts.any((element) => element['cpf'] == contact.cpf)) {
+        throw ContactFailure(message: 'Contato já existe');
+      }
+
       contacts.add(contact.toMap());
       await preferences.setString(
         'contacts/${user.email}',
