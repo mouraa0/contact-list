@@ -1,4 +1,5 @@
 import 'package:contact_list/core/constants/app_constants.dart';
+import 'package:contact_list/core/helpers/show_modal.dart';
 import 'package:contact_list/core/widgets/input/input_field.dart';
 import 'package:contact_list/modules/contacts/presentation/controller/contact_page_controller.dart';
 import 'package:contact_list/modules/contacts/presentation/pages/components/contact_item.dart';
@@ -86,7 +87,11 @@ class _Sidebar extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.add),
-                  onPressed: () => _showFormModal(context, controller),
+                  onPressed:
+                      () => showFormModal(
+                        context,
+                        NewContactDialog(onAddContact: controller.addContact),
+                      ),
                 ),
               ],
             ),
@@ -105,26 +110,6 @@ class _Sidebar extends StatelessWidget {
           Expanded(child: _ContactList(controller: controller)),
         ],
       ),
-    );
-  }
-
-  void _showFormModal(BuildContext context, ContactPageController controller) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppConstants.borderRadius),
-          ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 500),
-            child: NewContactDialog(
-              object: {},
-              onAddContact: controller.addContact,
-            ),
-          ),
-        );
-      },
     );
   }
 }
@@ -146,7 +131,7 @@ class _ContactList extends StatelessWidget {
             contact: contact,
             onTap: () => controller.onContactClicked(contact),
             onDelete: () => controller.onDeleteContact(contact),
-            onEdit: () {},
+            onEdit: () => controller.onEditContact(context, contact),
           );
         },
       ),

@@ -48,10 +48,6 @@ class InputValidator {
       return requiredFieldError;
     }
 
-    if (value.length != 14) {
-      return 'Telefone inválido.';
-    }
-
     return null;
   }
 

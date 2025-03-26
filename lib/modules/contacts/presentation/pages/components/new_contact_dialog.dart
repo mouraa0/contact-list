@@ -12,22 +12,28 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
-class NewContactDialog extends StatelessWidget {
-  final Object object;
+class NewContactDialog extends StatefulWidget {
+  final ContactEntity? contact;
   final void Function(ContactEntity) onAddContact;
 
-  final _formKey = GlobalKey<FormState>();
+  const NewContactDialog({super.key, this.contact, required this.onAddContact});
 
-  NewContactDialog({
-    super.key,
-    required this.object,
-    required this.onAddContact,
-  });
+  @override
+  State<NewContactDialog> createState() => _NewContactDialogState();
+}
+
+class _NewContactDialogState extends State<NewContactDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _controller = Modular.get<AddressModalController>();
+
+  @override
+  void initState() {
+    _controller.initDialog(widget.contact);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Modular.get<AddressModalController>();
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(AppConstants.defaultPadding),
@@ -47,7 +53,7 @@ class NewContactDialog extends StatelessWidget {
               ),
               InputField(
                 headerText: 'Nome',
-                controller: controller.nameController,
+                controller: _controller.nameController,
                 hintText: 'João da Silva',
                 validator: InputValidator.validateRequiredField,
               ),
@@ -58,7 +64,7 @@ class NewContactDialog extends StatelessWidget {
                     child: InputField(
                       headerText: 'CPF',
                       hintText: '000.000.000-00',
-                      controller: controller.cpfController,
+                      controller: _controller.cpfController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(11),
@@ -71,7 +77,7 @@ class NewContactDialog extends StatelessWidget {
                     child: InputField(
                       headerText: 'Telefone',
                       hintText: '(00) 00000-0000',
-                      controller: controller.phoneController,
+                      controller: _controller.phoneController,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(11),
@@ -84,8 +90,9 @@ class NewContactDialog extends StatelessWidget {
               ),
               _AddressForm(
                 formKey: _formKey,
-                controller: controller,
-                onAddContact: onAddContact,
+                controller: _controller,
+                onAddContact: widget.onAddContact,
+                contact: widget.contact,
               ),
             ],
           ),
@@ -99,11 +106,13 @@ class _AddressForm extends StatelessWidget {
   final GlobalKey<FormState> _formKey;
   final AddressModalController controller;
   final void Function(ContactEntity) onAddContact;
+  final ContactEntity? contact;
 
   const _AddressForm({
     required GlobalKey<FormState> formKey,
     required this.controller,
     required this.onAddContact,
+    required this.contact,
   }) : _formKey = formKey;
 
   @override
@@ -216,7 +225,8 @@ class _AddressForm extends StatelessWidget {
                     width: double.infinity,
                     child: SubmitButton(
                       formKey: _formKey,
-                      text: 'Salvar Contato',
+                      text:
+                          contact != null ? 'Editar Contato' : 'Salvar Contato',
                       onSubmit: () async {
                         if (_formKey.currentState?.validate() ?? false) {
                           final contact = await controller.onButtonClick();

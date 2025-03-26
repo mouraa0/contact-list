@@ -1,10 +1,13 @@
 import 'package:contact_list/core/error/failure.dart';
+import 'package:contact_list/core/helpers/show_modal.dart';
 import 'package:contact_list/core/service/user_service.dart';
 import 'package:contact_list/modules/contacts/domain/entities/contact_entity.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_add_contact_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_clear_contacts_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_delete_contact_usecase.dart';
 import 'package:contact_list/modules/contacts/domain/usecases/do_get_contacts_usecase.dart';
+import 'package:contact_list/modules/contacts/presentation/pages/components/new_contact_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:get/state_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -110,6 +113,33 @@ class ContactPageController extends GetxController {
       },
       (success) {
         getContacts();
+      },
+    );
+  }
+
+  void onEditContact(BuildContext context, ContactEntity contact) {
+    final oldContact = contact;
+
+    showFormModal(
+      context,
+      NewContactDialog(
+        contact: contact,
+        onAddContact: (newContact) => _editContact(newContact, oldContact),
+      ),
+    );
+  }
+
+  void _editContact(ContactEntity newContact, ContactEntity oldContact) async {
+    final userService = Modular.get<UserService>();
+
+    final result = await _doDeleteContactUsecase(oldContact, userService.user!);
+
+    result.fold(
+      (failure) {
+        print((failure as ContactFailure).message);
+      },
+      (success) {
+        addContact(newContact);
       },
     );
   }

@@ -41,6 +41,21 @@ class AddressModalController extends GetxController {
 
   AutocompleteAddressEntity? selectedAddress;
 
+  void initDialog(ContactEntity? contact) async {
+    if (contact == null) {
+      return;
+    }
+
+    nameController.text = contact.name;
+    cpfController.text = contact.cpf;
+    phoneController.text = contact.phone;
+    streetController.text = contact.address.street;
+    numberController.text = contact.address.number;
+    cityController.text = contact.address.city;
+    stateController.text = contact.address.state;
+    postalCodeController.text = contact.address.cep;
+  }
+
   Future<List<AutocompleteAddressEntity>> onSearchChanged(String? value) async {
     if (value == null || value.isEmpty) {
       return [];

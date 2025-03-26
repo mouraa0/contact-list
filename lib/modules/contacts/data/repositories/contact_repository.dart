@@ -76,4 +76,23 @@ class ContactRepository implements IContactRepository {
       return Left(e is Failure ? e : ContactFailure(message: 'Error'));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> editContact({
+    required ContactEntity newContact,
+    required ContactEntity oldContact,
+    required AuthEntity user,
+  }) async {
+    try {
+      await _datasource.editContact(
+        newContact: ContactModel.fromEntity(newContact),
+        oldContact: ContactModel.fromEntity(oldContact),
+        user: user,
+      );
+
+      return Right(null);
+    } catch (e) {
+      return Left(e is Failure ? e : ContactFailure(message: 'Error'));
+    }
+  }
 }
